@@ -43,6 +43,7 @@ namespace BikeRent
             brandTextBlock.Text = bike.Brand;
             typeTextBlock.Text = bike.Type;
             descriptionTextBlock.Text = bike.Description;
+            maintenanceProgressBar.Maximum = 100;
             maintenanceProgressBar.Value = bike.TotalDistance / 100;
             maintenanceTextBlock.Text = $"{bike.TotalDistance} / 10000 km";
             rentOrReturnButton.Content = "Huur";
@@ -52,13 +53,13 @@ namespace BikeRent
             if (bike.IsOccupied)
             {
                 rentStatusTextBlock.Text = $"Verhuurd aan {_company.CurrentBike.FindCurrentRental().Customer} tot {_company.CurrentBike.FindCurrentRental().EndDate.ToString("dd/MM/yyyy")}";
-                rentOrReturnButton.Content = "Retour"; 
+                rentOrReturnButton.Content = "Retour";
             }
 
             if (bike.TotalDistance >= bike.KmPerMaintenanceCycle)
             {
                 rentOrReturnButton.IsEnabled = false;
-                maintenanceTextBlock.Text = bike.KmPerMaintenanceCycle.ToString(); 
+                maintenanceTextBlock.Text = $"{bike.KmPerMaintenanceCycle} / 10000 km";
             }
             
             electricalImage.Visibility = Visibility.Collapsed; 
@@ -67,9 +68,14 @@ namespace BikeRent
             {
                 electricalImage.Visibility = Visibility.Visible;
                 batteryTextBlock.Visibility = Visibility.Visible;
-
-                maintenanceProgressBar.Value = bike.TotalDistance / 75;
+                maintenanceProgressBar.Maximum = 75; 
                 maintenanceTextBlock.Text = $"{bike.TotalDistance} / 7500 km";
+
+                if (bike.TotalDistance >= bike.KmPerMaintenanceCycle)
+                {
+                    rentOrReturnButton.IsEnabled = false;
+                    maintenanceTextBlock.Text = $"{bike.KmPerMaintenanceCycle} / 7500 km";
+                }
             }
 
             genderImage.Source = _maleBikeImage; 
