@@ -89,11 +89,25 @@ namespace BikeRent
 
             if (_bike.IsOccupied)
             {
-                ReturnTheBike();
+                try
+                {
+                    ReturnTheBike();
+                }
+                catch (ValidationException ex)
+                {
+                    MessageBox.Show(ex.Message); 
+                }
             }
             else
             {
-                RentTheBike();
+                try
+                {
+                    RentTheBike();
+                }
+                catch (ValidationException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             this.Close();
         }
@@ -101,30 +115,24 @@ namespace BikeRent
         private void RentTheBike()
         {
             //ToDo: uncomment
-            try
-            {
-                DateTime startDate = BusinessRules.CheckStartDate(startDateTextBox.Text);
-                string customer = customerTextBox.Text;
-                int days = (int)daysSlider.Value;
 
-                _bike.Rent(startDate, days, customer);
+            DateTime startDate = BusinessRules.CheckStartDate(startDateTextBox.Text);
+            string customer = customerTextBox.Text;
+            int days = (int)daysSlider.Value;
 
-                MessageBox.Show("Nieuwe verhuring geaccepteerd");
-            }
-            catch (ValidationException ex)
-            {
-                MessageBox.Show(ex.Message); 
-            }
+            _bike.Rent(startDate, days, customer);
+
+            MessageBox.Show("Nieuwe verhuring geaccepteerd");
         }
 
         private void ReturnTheBike()
         {
             //ToDo: uncomment
-            
-            //double distance = Convert.ToDouble(kmTextBox.Text);
-            //_bike.Return(distance);
 
-            //MessageBox.Show("Fiets ingeleverd");
+            double distance = Convert.ToDouble(kmTextBox.Text);
+            _bike.Return(distance);
+
+            MessageBox.Show("Fiets ingeleverd");
         }
     }
 }

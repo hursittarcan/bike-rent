@@ -49,20 +49,16 @@ namespace BikeRent
             rentOrReturnButton.IsEnabled = true; 
             rentStatusTextBlock.Text = String.Empty;
 
+            if (bike.IsOccupied)
+            {
+                rentStatusTextBlock.Text = $"Verhuurd aan {_company.CurrentBike.FindCurrentRental().Customer} tot {_company.CurrentBike.FindCurrentRental().EndDate.ToString("dd/MM/yyyy")}";
+                rentOrReturnButton.Content = "Retour"; 
+            }
+
             if (bike.TotalDistance >= bike.KmPerMaintenanceCycle)
             {
                 rentOrReturnButton.IsEnabled = false;
                 maintenanceTextBlock.Text = bike.KmPerMaintenanceCycle.ToString(); 
-            }
-
-            if (bike.FindCurrentRental() != null)
-            {
-                rentStatusTextBlock.Text = $"Verhuurd aan {bike.FindCurrentRental().Customer} tot {bike.FindCurrentRental().EndDate.ToString("dd/MM/yyyy")}";
-            }
-
-            if (rentStatusTextBlock.Text != String.Empty)
-            {
-                rentOrReturnButton.Content = "Retour"; 
             }
             
             electricalImage.Visibility = Visibility.Collapsed; 
@@ -93,7 +89,8 @@ namespace BikeRent
 
             this.Hide();
             rentalWindow.ShowDialog();
-            this.Show(); 
+            this.Show();
+            BindCurrentBike(_company.CurrentBike); 
         }
 
         private void exportItem_Click(object sender, RoutedEventArgs e)
