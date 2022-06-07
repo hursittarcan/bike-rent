@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>disable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\BackgroundDark.png" />
+    <None Remove="Images\BackgroundLight.png" />
+    <None Remove="Images\Electrical.png" />
+    <None Remove="Images\FemaleBike.png" />
+    <None Remove="Images\MaleBike.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\BackgroundDark.png" />
+    <Resource Include="Images\BackgroundLight.png" />
+    <Resource Include="Images\Electrical.png" />
+    <Resource Include="Images\FemaleBike.png" />
+    <Resource Include="Images\MaleBike.png" />
+  </ItemGroup>
+
+</Project>
