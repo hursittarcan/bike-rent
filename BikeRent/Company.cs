@@ -11,6 +11,8 @@ namespace BikeRent
         {
             Bikes = CreateBikeCatalog();
             CreateRentalTestData();
+
+            _currentBikeIndex = 0;
         }    
 
         public List<BikeBase> Bikes { get; set; }
@@ -18,13 +20,19 @@ namespace BikeRent
         //ToDo: Modify CurrentBike so that it returns the current bike
         public BikeBase CurrentBike
         {
-            get => Bikes[2]; // remove this and implement correctly
+            get => Bikes[_currentBikeIndex]; // remove this and implement correctly
         }
 
         //ToDo: change _currentBikeIndex to make the next bike current
         //      If you are at the end of the Bikes list, just start at the beginning.
         public void Next()
-        { }
+        { 
+            _currentBikeIndex++;
+            if (_currentBikeIndex > Bikes.Count - 1)
+            {
+                _currentBikeIndex = 0; 
+            }
+        }
         
         private List<BikeBase> CreateBikeCatalog()
         {

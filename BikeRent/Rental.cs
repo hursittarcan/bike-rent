@@ -6,13 +6,13 @@ namespace BikeRent
     {
         public Rental(DateTime startDate, int days, double pricePerDay, string customer)
         {
-            StartDate = startDate;
-            Customer = customer;
-
             //ToDo: complete constructor
-
             // EndDate is calculated from startDate and days
             // Price = Use method CalculatePrice from class BusinessRules
+            StartDate = startDate;
+            Customer = customer;
+            EndDate = startDate + TimeSpan.FromDays(days);
+            Price = BusinessRules.CalculatePrice(days, pricePerDay);
         }
 
         public DateTime StartDate { get; set; }
