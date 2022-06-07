@@ -39,6 +39,32 @@ namespace BikeRent
             // ToDo:
             //  - Place info on the screen
             //  - look at the screenshots to know exactly what and when
+            idTextBlock.Text = bike.Id.ToString("000");
+            brandTextBlock.Text = bike.Brand;
+            typeTextBlock.Text = bike.Type;
+            descriptionTextBlock.Text = bike.Description;
+            maintenanceProgressBar.Value = bike.TotalDistance / 100;
+            maintenanceTextBlock.Text = $"{bike.TotalDistance} / 10000 km";
+            rentStatusTextBlock.Text = String.Empty; 
+
+           
+
+            rentStatusTextBlock.Text = $"Verhuurd aan {bike.FindCurrentRental().Customer} tot {bike.FindCurrentRental().EndDate.ToString("dd/MM/yyyy")}";
+
+            electricalImage.Visibility = Visibility.Collapsed; 
+            batteryTextBlock.Visibility = Visibility.Collapsed;
+            if (bike is EBike)
+            {
+                electricalImage.Visibility = Visibility.Visible;
+                batteryTextBlock.Visibility = Visibility.Visible; 
+            }
+
+            genderImage.Source = _maleBikeImage; 
+            if (bike.Gender == Gender.Female)
+            {
+                genderImage.Source = _femaleBikeImage;
+            }
+
         }
 
         private void rentOrReturnButton_Click(object sender, RoutedEventArgs e)
