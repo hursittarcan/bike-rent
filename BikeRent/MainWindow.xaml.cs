@@ -45,18 +45,35 @@ namespace BikeRent
             descriptionTextBlock.Text = bike.Description;
             maintenanceProgressBar.Value = bike.TotalDistance / 100;
             maintenanceTextBlock.Text = $"{bike.TotalDistance} / 10000 km";
-            rentStatusTextBlock.Text = String.Empty; 
+            rentOrReturnButton.Content = "Huur";
+            rentOrReturnButton.IsEnabled = true; 
+            rentStatusTextBlock.Text = String.Empty;
 
-           
+            if (bike.TotalDistance >= bike.KmPerMaintenanceCycle)
+            {
+                rentOrReturnButton.IsEnabled = false;
+                maintenanceTextBlock.Text = bike.KmPerMaintenanceCycle.ToString(); 
+            }
 
-            rentStatusTextBlock.Text = $"Verhuurd aan {bike.FindCurrentRental().Customer} tot {bike.FindCurrentRental().EndDate.ToString("dd/MM/yyyy")}";
+            if (bike.FindCurrentRental() != null)
+            {
+                rentStatusTextBlock.Text = $"Verhuurd aan {bike.FindCurrentRental().Customer} tot {bike.FindCurrentRental().EndDate.ToString("dd/MM/yyyy")}";
+            }
 
+            if (rentStatusTextBlock.Text != String.Empty)
+            {
+                rentOrReturnButton.Content = "Retour"; 
+            }
+            
             electricalImage.Visibility = Visibility.Collapsed; 
             batteryTextBlock.Visibility = Visibility.Collapsed;
             if (bike is EBike)
             {
                 electricalImage.Visibility = Visibility.Visible;
-                batteryTextBlock.Visibility = Visibility.Visible; 
+                batteryTextBlock.Visibility = Visibility.Visible;
+
+                maintenanceProgressBar.Value = bike.TotalDistance / 75;
+                maintenanceTextBlock.Text = $"{bike.TotalDistance} / 7500 km";
             }
 
             genderImage.Source = _maleBikeImage; 
@@ -64,7 +81,6 @@ namespace BikeRent
             {
                 genderImage.Source = _femaleBikeImage;
             }
-
         }
 
         private void rentOrReturnButton_Click(object sender, RoutedEventArgs e)
@@ -73,6 +89,11 @@ namespace BikeRent
             //       and pass along the information from the CurrentBike.
             //       After the RentalWindow is closed, update the information in
             //       this window.
+            RentalWindow rentalWindow = new RentalWindow(_company.CurrentBike);
+
+            this.Hide();
+            rentalWindow.ShowDialog();
+            this.Show(); 
         }
 
         private void exportItem_Click(object sender, RoutedEventArgs e)

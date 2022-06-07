@@ -9,22 +9,35 @@ namespace BikeRent
     public partial class RentalWindow : Window
     {
         //ToDo : you may add an extra constructor parameter to pass along information
-        public RentalWindow()
+        private BikeBase _bike; 
+
+        public RentalWindow(BikeBase bike)
         {
             InitializeComponent();
+            _bike = bike;
 
             //ToDo: call the following methods
             //  EnableControls
             //  BindCurrentBike
+            EnableControls(_bike); 
+            BindCurrentBike(_bike);
 
             //ToDo: call UpdateDaysAndTotalPrice when the user moves the slider
+            daysSlider.ValueChanged += DaysSlider_ValueChanged;
+        }
+
+        private void DaysSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            UpdateDaysAndTotalPrice();
         }
 
         private void UpdateDaysAndTotalPrice()
         {
             int days = (int)daysSlider.Value;
             daysTextBlock.Text = $"{days}";
+
             // ToDo: Use method CalculatePrice from class BusinessRules to set totalTextBlock.Text
+            totalTextBlock.Text = BusinessRules.CalculatePrice(days, _bike.PricePerDay).ToString();
         }
 
         private void BindCurrentBike(BikeBase bike)
