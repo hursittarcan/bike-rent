@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace BikeRent
 {
-    internal class ValidationException
+    internal class ValidationException : Exception
     {
+        public ValidationException(string message)
+            : base(message)
+        {
+
+        }
     }
 }

@@ -32,5 +32,24 @@ namespace BikeRent
         //       should be of format dd/mm/jjjj
         //       should not be in the past
         //       throws a ValidationException if these rules are violated
+        public static DateTime CheckStartDate(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                throw new ValidationException("Date can't be empty!");
+            }
+            else if (DateTime.TryParse(text, out _))
+            {
+                if (DateTime.Parse(text) < DateTime.Now.Date)
+                {
+                    throw new ValidationException("Date can't be in the past!"); 
+                }
+                return DateTime.Parse(text);
+            }
+            else
+            {
+                throw new ValidationException("Please provide a valid date in format dd/MM/yyyy"); 
+            }
+        }
     }
 }

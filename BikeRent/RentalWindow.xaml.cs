@@ -84,31 +84,37 @@ namespace BikeRent
         }
 
         private void submitButton_Click(object sender, RoutedEventArgs e)
-        {        
+        {
             //ToDo: uncomment and provide proper exception handling
-            
-            //if (_bike.IsOccupied)
-            //{
-            //    ReturnTheBike();
-            //}
-            //else
-            //{
-            //    RentTheBike();
-            //}
+
+            if (_bike.IsOccupied)
+            {
+                ReturnTheBike();
+            }
+            else
+            {
+                RentTheBike();
+            }
             this.Close();
         }
 
         private void RentTheBike()
-        {       
+        {
             //ToDo: uncomment
+            try
+            {
+                DateTime startDate = BusinessRules.CheckStartDate(startDateTextBox.Text);
+                string customer = customerTextBox.Text;
+                int days = (int)daysSlider.Value;
 
-            //DateTime startDate = BusinessRules.CheckStartDate(startDateTextBox.Text);
-            //string customer = customerTextBox.Text;
-            //int days = (int)daysSlider.Value;
+                _bike.Rent(startDate, days, customer);
 
-            //_bike.Rent(startDate, days, customer);
-
-            //MessageBox.Show("Nieuwe verhuring geaccepteerd");
+                MessageBox.Show("Nieuwe verhuring geaccepteerd");
+            }
+            catch (ValidationException ex)
+            {
+                MessageBox.Show(ex.Message); 
+            }
         }
 
         private void ReturnTheBike()
